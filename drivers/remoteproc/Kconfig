@@ -313,6 +313,20 @@ config TI_K3_R5_REMOTEPROC
 	  It's safe to say N here if you're not interested in utilizing
 	  a slave processor.
 
+config RTT_QEMU_REMOTEPROC
+	tristate "RT-Thread QEMU remoteproc support"
+	depends on SMP
+	depends on REMOTEPROC
+	select MAILBOX
+	help
+	  Say y here to support RT-Thread remoteproc driver.
+
+	  Remoteproc driver is necessary when support OpenAMP with rtthread
+	  and any form of Linux.
+
+	  Suggest to select 'M' on this selection. Be aware of that it's only
+	  on testing.
+
 endif # REMOTEPROC
 
 endmenu
