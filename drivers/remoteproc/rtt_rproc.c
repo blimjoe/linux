@@ -81,6 +81,7 @@ static int rtt_rproc_probe(struct platform_device *pdev) {
 	struct rtt_rproc *ddata;
 	int ret;
 
+	pr_err("start probe\n");
 	match = of_match_device(rtt_rproc_match, dev);
 	if (!match) {
 		dev_err(dev, "This is not rtt dummy remoteproc\n");
@@ -98,6 +99,7 @@ static int rtt_rproc_probe(struct platform_device *pdev) {
 	ret = rproc_add(rproc);
 	if(ret) {
 		dev_err(dev, "Remoteproc add failed\n");
+		return ret;
 	}
 
 	return 0;
