@@ -21,7 +21,7 @@
 
 	memory@80000000 {
 		device_type = "memory";
-		reg = < 0x00 0x80000000 0x00 0xfffffff >;
+		reg = < 0x00 0x80000000 0x00 0x101fffff >;
 	};
 
 	cpus {
@@ -84,8 +84,30 @@
 		compatible = "simple-bus";
 		ranges;
 
+/*
 		dummy-rproc@0 {
 			compatible = "rtt,dummy-rproc";
+		};
+*/
+
+		shm@90000000 {
+			compatible = "shm_uio";
+			reg = < 0x0 0x90000000 0x0 0x00080000>;
+		};
+
+		shm@90100000 {
+			compatible = "shm_uio";
+			reg = < 0x0 0x90100000 0x0 0x00100000>;
+		};
+
+		vring@0 {
+			compatible= "vring_uio";
+			reg = < 0x0 0x0 0x0 0x0>;
+		};
+
+		rproc@90200000 {
+			compatible = "rproc_uio";
+			reg = < 0x0 0x90200000 0x0 0x0fe00000>;
 		};
 
 		flash@20000000 {
@@ -109,6 +131,7 @@
 			compatible = "ns16550a";
 		};
 
+/*
 		uart@20000000 {
 			interrupts = < 0x0b >;
 			interrupt-parent = < 0x05 >;
@@ -116,6 +139,7 @@
 			reg = < 0x00 0x20000000 0x00 0x100 >;
 			compatible = "ns16550a";
 		};
+*/
 
 		poweroff {
 			value = < 0x5555 >;
