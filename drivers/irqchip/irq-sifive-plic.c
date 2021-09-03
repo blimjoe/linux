@@ -227,6 +227,7 @@ static void plic_handle_irq(struct irq_desc *desc)
 	struct irq_chip *chip = irq_desc_get_chip(desc);
 	void __iomem *claim = handler->hart_base + CONTEXT_CLAIM;
 	irq_hw_number_t hwirq;
+	bool handle_irq;
 
 	WARN_ON_ONCE(!handler->present);
 
@@ -235,14 +236,20 @@ static void plic_handle_irq(struct irq_desc *desc)
 	while ((hwirq = readl(claim))) {
 		int irq = irq_find_mapping(handler->priv->irqdomain, hwirq);
 
-		if (unlikely(irq <= 0))
+		if (unlikely(irq <= 0)){
 			pr_warn_ratelimited("can't find mapping for hwirq %lu\n",
 					hwirq);
-		else
+			handle_irq = FALSE;
+			break;
+		}
+		else {
+			handle_irq = TRUE;
 			generic_handle_irq(irq);
+		}
 	}
-
-	chained_irq_exit(chip, desc);
+	if (handle_irq) {
+		chained_irq_exit(chip, desc);
+	}
 }
 
 static void plic_set_threshold(struct plic_handler *handler, u32 threshold)
